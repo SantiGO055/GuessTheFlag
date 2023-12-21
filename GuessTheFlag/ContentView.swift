@@ -7,6 +7,16 @@
 
 import SwiftUI
 
+struct FlagImage: View {
+    var countries: String
+
+    var body: some View {
+        Image(countries)
+            .clipShape(.capsule)
+            .shadow(radius: 5)
+    }
+}
+
 struct ContentView: View {
     
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "Ukraine", "US"].shuffled()
@@ -14,6 +24,7 @@ struct ContentView: View {
     
     @State private var showingScore = false
     @State private var scoreTitle = ""
+    @State private var resetTitle = ""
     @State private var resetScore = false
     @State private var score = 0
     @State private var countTimesQuestions = 0
@@ -37,7 +48,7 @@ struct ContentView: View {
                 VStack(spacing: 15) {
                     VStack {
                         Text("Tap the flag of")
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.primary)
                             .font(.subheadline.weight(.heavy))
                         Text(countries[correctAnswer])
                             
@@ -48,9 +59,7 @@ struct ContentView: View {
                         Button {
                            flagTapped(number)
                         } label: {
-                            Image(countries[number])
-                                .clipShape(.capsule)
-                                .shadow(radius: 5)
+                            FlagImage(countries: countries[number])
                         }
                         
                     }
@@ -77,7 +86,7 @@ struct ContentView: View {
                 Text("Your score is \(score)")
             }
             
-            .alert(scoreTitle, isPresented: $resetScore) {
+            .alert(resetTitle, isPresented: $resetScore) {
                 Button("OK", action: reset)
             } message: {
                 Text("Your score is \(score) . Reset the game")
